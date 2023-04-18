@@ -1,10 +1,11 @@
 import { Router} from "express";
+import { getAllTicketTypes } from "@/controllers";
 
 const ticketsRouter = Router();
 
-ticketsRouter.get('/tickets/types', )
-ticketsRouter.get('/tickets', )
-ticketsRouter.post('/tickets', )
+ticketsRouter.get('/types', getAllTicketTypes)
+ticketsRouter.get('/', )
+ticketsRouter.post('/', )
 
 
 export { ticketsRouter };
