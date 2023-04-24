@@ -6,11 +6,15 @@ import dayjs from "dayjs";
 export async function getAllTicketTypes(): Promise<TicketType[]> {
     const getAllTicketTypes = await ticketsRepository.findMany();
 
-    if (!getAllTicketTypes) {
-        throw notFoundError();
-    } else  {
-        return getAllTicketTypes;
-    }
+    if (!getAllTicketTypes) throw notFoundError();
+
+    return getAllTicketTypes;
+}
+
+async function getTickets (userId) {
+    const ticket = await ticketsRepository.findFirst(userId)
+
+
 }
 
 export type CreateTicketType = Omit<Ticket, 'id' | 'enrollmentId' | 'status' | 'createdAt' | 'updatedAt'>
