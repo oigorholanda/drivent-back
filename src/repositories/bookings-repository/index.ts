@@ -5,4 +5,16 @@ async function findBooking() {
 }
 
 
-export default { findBooking }
+async function findBookingById(userId: number) {
+    return prisma.booking.findUnique({
+        where: {
+            id: userId
+        },
+        include: {
+            Room: true,
+        }
+    })
+}
+
+
+export default { findBooking, findBookingById }

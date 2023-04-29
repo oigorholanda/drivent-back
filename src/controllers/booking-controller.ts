@@ -4,8 +4,11 @@ import { NextFunction, Response } from "express";
 import httpStatus from "http-status";
 
 export async function getBooking(req: AuthenticatedRequest, res: Response, next: NextFunction) {
+    const { userId } = req
+    
     try {
-        const booking = await bookingsService.getBooking()
+        const booking = await bookingsService.getBooking(userId)
+
         return res.status(httpStatus.OK).send(booking)
     } catch (error) {
         return res.status(httpStatus.UNAUTHORIZED).send({})
