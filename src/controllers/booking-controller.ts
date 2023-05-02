@@ -14,3 +14,19 @@ export async function getBooking(req: AuthenticatedRequest, res: Response, next:
         return res.status(httpStatus.UNAUTHORIZED).send({})
     }
 }
+
+export async function changeBooking(req:AuthenticatedRequest, res:Response, next: NextFunction ) {
+    const { userId } = req
+    const bookingId = Number(req.params.bookingId)
+    const {roomId} = req.body as Record<string, number>
+    
+    try {
+        if (!bookingId) {
+            return res.sendStatus(httpStatus.BAD_REQUEST)
+        }
+
+        
+    } catch (error) {
+        
+    }
+}

@@ -6,7 +6,7 @@ async function findBooking() {
 
 
 async function findBookingById(userId: number) {
-    return prisma.booking.findUnique({
+    return prisma.booking.findMany({
         where: {
             id: userId
         },
