@@ -1,32 +1,50 @@
-import { AuthenticatedRequest } from "@/middlewares";
-import bookingsService from "@/services/bookings-service";
-import { NextFunction, Response } from "express";
-import httpStatus from "http-status";
+import { NextFunction, Response } from 'express';
+import httpStatus from 'http-status';
 
-export async function getBooking(req: AuthenticatedRequest, res: Response, next: NextFunction) {
-    const { userId } = req
-    
-    try {
-        const booking = await bookingsService.getBooking(userId)
+import { AuthenticatedRequest } from '@/middlewares';
+import bookingService from '@/services/booking-service';
 
-        return res.status(httpStatus.OK).send(booking)
-    } catch (error) {
-        return res.status(httpStatus.UNAUTHORIZED).send({})
-    }
+export async function listBooking(req: AuthenticatedRequest, res: Response, next: NextFunction) {
+  try {
+    const { userId } = req;
+    const booking = await bookingService.getBooking(userId);
+    return res.status(httpStatus.OK).send({
+      id: booking.id,
+      Room: booking.Room,
+    });
+  } catch (error) {
+    next(error);
+  }
 }
 
-export async function changeBooking(req:AuthenticatedRequest, res:Response, next: NextFunction ) {
-    const { userId } = req
-    const bookingId = Number(req.params.bookingId)
-    const {roomId} = req.body as Record<string, number>
-    
-    try {
-        if (!bookingId) {
-            return res.sendStatus(httpStatus.BAD_REQUEST)
-        }
+export async function bookingRoom(req: AuthenticatedRequest, res: Response, next: NextFunction) {
+  try {
+    const { userId } = req;
+    const { roomId } = req.body as Record<string, number>;
 
-        
-    } catch (error) {
-        
-    }
+    const booking = await bookingService.bookingRoomById(userId, roomId);
+
+    return res.status(httpStatus.OK).send({
+      bookingId: booking.id,
+    });
+  } catch (error) {
+    next(error);
+  }
+}
+
+export async function changeBooking(req: AuthenticatedRequest, res: Response, next: NextFunction) {
+  const { userId } = req;
+  const bookingId = Number(req.params.bookingId);
+  if (!bookingId) return res.sendStatus(httpStatus.BAD_REQUEST);
+
+  try {
+    const { roomId } = req.body as Record<string, number>; // <tipo da chave, tipo do valor>
+    const booking = await bookingService.changeBookingRoomById(userId, roomId);
+
+    return res.status(httpStatus.OK).send({
+      bookingId: booking.id,
+    });
+  } catch (error) {
+    next(error);
+  }
 }
